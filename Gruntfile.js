@@ -19,8 +19,8 @@ module.exports = function(grunt) {
     },
     watch: {
       app: {
-        files: 'script.js',
-        tasks: ['jshint:app','uglify:app']
+        files: ['script.js','index.jade','style.styl'],
+        tasks: ['default']
       }
     },
     uglify: {

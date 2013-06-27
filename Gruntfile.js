@@ -42,6 +42,9 @@ module.exports = function(grunt) {
         jquery: true,
         devel: true,
         worker: true, //web Workers
+        globals: {
+          cytoscape: false
+        },
 
         //OTHER OPTIONS
         curly: true,  //always put curly braces, even around single line if's

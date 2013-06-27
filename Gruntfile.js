@@ -26,7 +26,7 @@ module.exports = function(grunt) {
     uglify: {
       app: {
         files: {
-          'build/script.min.js': ['script.js']
+          'build/script.js': ['script.js']
         }
       },
       options: {

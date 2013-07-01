@@ -51,7 +51,7 @@ module.exports = function(grunt) {
         indent:2,     //2 space per tab default
         undef: true,  //catch accidental typos (undefined global vars)
         unused:true,  //catch unused vars
-        strict: true  //use strict mode
+        strict: false  //use strict mode
       }
     },
   });
@@ -64,5 +64,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-stylus');
 
   grunt.registerTask('compile', ['jade:all','stylus:all']);
-  grunt.registerTask('default', ['compile','jshint:app','uglify:app']);
+  grunt.registerTask('default', ['compile',/*'jshint:app',*/'uglify:app']);
 };

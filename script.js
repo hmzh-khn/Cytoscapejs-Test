@@ -1,5 +1,11 @@
+var msgBox = document.getElementById('msg');
+
 $('#cy').cytoscape({
   style: cytoscape.stylesheet()
+    .selector('core')
+      .css({
+        'panning-cursor': 'crosshair' //what does this do?
+      })
     .selector('node')
       .css({
         'content': 'data(name)',
@@ -7,11 +13,11 @@ $('#cy').cytoscape({
         'color': 'white',
         'text-outline-width': 2,
         'text-outline-color': '#888',
-        
+
       })
     .selector('edge')
       .css({
-        'target-arrow-shape': 'triangle'
+        'target-arrow-shape': 'none'
       })
     .selector(':selected')
       .css({
@@ -60,6 +66,8 @@ $('#cy').cytoscape({
       var node = e.cyTarget; 
       var neighborhood = node.neighborhood().add(node);
       
+      msgBox.innerText = node.data('id') + ' : ' + node.data('name');
+
       cy.elements().addClass('faded');
       neighborhood.removeClass('faded');
     });
@@ -69,5 +77,6 @@ $('#cy').cytoscape({
         cy.elements().removeClass('faded');
       }
     });
+
   }
 });

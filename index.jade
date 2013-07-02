@@ -3,11 +3,12 @@ html(lang="en")
   head
     meta(name="description",content="[An example of getting started with Cytoscape.js]")
     title CytoscapeJS Playground
+    link(rel="stylesheet",type="text/css",href="style.css")
     script(src="../components/jquery/jquery.min.js")
     meta(charset="utf-8")
     script(src="../components/cytoscape/cytoscape.min.js")
 
   body
-    #cy(style="display: block; font-family: 'helvetica arial sans-serif'; font-size: 14px; font-style: normal; font-variant: normal; font-weight: normal; height: 100%; left: 0px; line-height: normal; position: absolute; top: 0px; width: 1280px;")
-
+    #cy(style="display: block; font-family: 'helvetica arial sans-serif'; font-size: 14px; height: 80%; left: 0px; line-height: normal; position: absolute; bottom: 0px; width: 1280px;")
+    #msg Node Information
     script(src="script.js")

@@ -1,10 +1,13 @@
 doctype 5
-html(lang='en')
-head
-  title CytoscapeJS Playground
-  link(href='style.css')
-body
-  #cy
-  p#msg Messages
-script(src='http://cytoscape.github.io/cytoscape.js/api/cytoscape.js-latest/cytoscape.min.js')
-script(src='script.js')
+html(lang="en")
+  head
+    meta(name="description",content="[An example of getting started with Cytoscape.js]")
+    title CytoscapeJS Playground
+    script(src="../components/jquery/jquery.min.js")
+    meta(charset="utf-8")
+    script(src="../components/cytoscape/cytoscape.min.js")
+
+  body
+    #cy(style="display: block; font-family: 'helvetica arial sans-serif'; font-size: 14px; font-style: normal; font-variant: normal; font-weight: normal; height: 100%; left: 0px; line-height: normal; position: absolute; top: 0px; width: 1280px;")
+
+    script(src="script.js")

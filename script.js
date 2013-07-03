@@ -1,11 +1,7 @@
-var dataXHR = new XMLHttpRequest(),
-  dataURL = 'http://cs.catlin.edu/~khanh/cytoscape/rgdMap.json',
-  rgdMap;
+var dataURL = 'http://cs.catlin.edu/~khanh/cytoscape/rgdMap.json',
+  rgdMap,
+  req;
 
-//data parsing
-dataXHR.onload = function() {
-  rgdMap = dataXHR.responseText; //should be a js object
-};
-
-dataXHR.open('GET', dataURL, true);     //automatically asynchronous
-dataXHR.send();
+req = $.getJSON(dataURL+'?callback=?', null, function(data) {
+  rgdMap = data;
+});

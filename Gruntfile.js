@@ -19,14 +19,16 @@ module.exports = function(grunt) {
     },
     watch: {
       app: {
-        files: ['script.js','index.jade','style.styl'],
+        files: ['script.js','cyto.js','model.js','index.jade','style.styl'],
         tasks: ['default']
       }
     },
     uglify: {
       app: {
         files: {
-          'build/script.js': ['script.js']
+          'build/script.js': 'script.js',
+          'build/cyto.js': 'cyto.js',
+          'build/model.js': 'model.js'
         }
       },
       options: {
@@ -35,7 +37,7 @@ module.exports = function(grunt) {
     },
     jshint: {
       all: ['**.js'], //lint all js files in the project
-      app: 'script.js',
+      app: ['script.js','cyto.js','model.js'],
       options: {
         //ENVIRONMENT GLOBALS
         browser: true,

@@ -1,12 +1,10 @@
-var dataXHR = new XMLHttpRequest(),
-  rgdMap = {},
+var rgdMap = {},
   dataURL = 'http://cs.catlin.edu/~khanh/cytoscape/RGD_ORTHOLOGS.txt',
   lineSplit = /\n/,
   spaceSplit = ' ', //could be used depending on whcih file i am using server is space
   dashSplit = '_';
 
-//data parsing
-dataXHR.onload = function() {
+$.get(dataURL, {}, function(responseText){  
   var data = dataXHR.responseText.split(lineSplit);    //split by new line
   var lineNum = 1;
 
@@ -22,8 +20,14 @@ dataXHR.onload = function() {
     });
 
     rgdMap[dataArray[0]] = new RGD(dataArray, lineNum);  //new rgd's with rat as key
-  };
-};
+  }; 
+},'text');  
 
-dataXHR.open('GET', dataURL, true);     //automatically asynchronous
-dataXHR.send();
+/*
+$.ajax({
+  url: dataURL,
+  type: 'GET',
+  cache: true
+}).success(function() {
+  
+);*/

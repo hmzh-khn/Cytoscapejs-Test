@@ -1,5 +1,5 @@
 var msgBox = document.getElementById('msg'),
-  ncbiLink = 'http://www.ncbi.nlm.nih.gov/gene/';
+  geneInfoLink = 'http://www.ncbi.nlm.nih.gov/gene/';
 
 $('#cy').cytoscape({
   style: cytoscape.stylesheet()
@@ -42,17 +42,17 @@ $('#cy').cytoscape({
       { data: { id: 'a4galt', name: 'Hamzah' } }
     ],
     edges: [
-      { data: { source: 'j', target: 'e' } },
-      { data: { source: 'j', target: 'k' } },
-      { data: { source: 'j', target: 'g' } },
-      { data: { source: 'e', target: 'j' } },
-      { data: { source: 'e', target: 'k' } },
-      { data: { source: 'k', target: 'j' } },
-      { data: { source: 'k', target: 'e' } },
-      { data: { source: 'k', target: 'g' } },
-      { data: { source: 'g', target: 'j' } },
-      { data: { source: 'g', target: 'h' } },
-      { data: { source: 'h', target: 'e' } }
+      { data: { source: 'a1bg', target: 'a1cf' } },
+      { data: { source: 'a1bg', target: 'a2m' } },
+      { data: { source: 'a1bg', target: 'a3galt2' } },
+      { data: { source: 'a1cf', target: 'a1bg' } },
+      { data: { source: 'a1cf', target: 'a2m' } },
+      { data: { source: 'a2m', target: 'a1bg' } },
+      { data: { source: 'a2m', target: 'a1cf' } },
+      { data: { source: 'a2m', target: 'a3galt2' } },
+      { data: { source: 'a3galt2', target: 'a1bg' } },
+      { data: { source: 'a3galt2', target: 'a4galt' } },
+      { data: { source: 'a4galt', target: 'a1cf' } }
     ]
   },
   
@@ -64,8 +64,10 @@ $('#cy').cytoscape({
     cy.on('tap', 'node', function(e){
       var node = e.cyTarget; 
       var neighborhood = node.neighborhood().add(node);
+      var nodeInfo = rgdMap[node.id()];
       
-      msgBox.innerText = node.data('id') + ' : ' + node.data('name');
+      msgBox.innerHTML = node.data('id') + ' : ' + node.data('name') + '\n';
+      msgBox.innerHTML += "<a href='" + geneInfoLink + nodeInfo.human.entrezGeneId + "'>Additional Information</a>"
 
       cy.elements().addClass('faded');
       neighborhood.removeClass('faded');

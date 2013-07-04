@@ -2,9 +2,8 @@ var dataXHR = new XMLHttpRequest(),
   rgdMap = {},
   dataURL = 'http://cs.catlin.edu/~khanh/cytoscape/RGD_ORTHOLOGS.txt',
   lineSplit = /\n/,
-  spaceSplit = / +/,
-  tabSplit = /\t/,
-  dashSplit = /-/;
+  spaceSplit = ' ', //could be used depending on whcih file i am using server is space
+  dashSplit = '_';
 
 //data parsing
 dataXHR.onload = function() {
@@ -12,9 +11,9 @@ dataXHR.onload = function() {
   var lineNum = 1;
 
   for(var lineNum = 1; lineNum < data.length - 1; lineNum++) {
-    var dataArr = data[lineNum-1].split(dashSplit);  //split by tabs
+    var dataArr = data[lineNum-1].split(_Split);  //split by tabs
     if(dataArr.length !== 13) {
-      console.error('Error w/ data on line ' + lineNum + ' Is really ' +dataArr.length+'.\n');
+      throw new Error('Error w/ data on line ' + lineNum + ' Is really ' +dataArr.length+'.\n');
     }
 
     //lower cases everything

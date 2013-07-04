@@ -19,7 +19,7 @@ module.exports = function(grunt) {
     },
     watch: {
       app: {
-        files: ['script.js','cyto.js','model.js','index.jade','style.styl'],
+        files: ['script.js','rgdSetUpScript.js','cyto.js','model.js','index.jade','style.styl'],
         tasks: ['default']
       }
     },
@@ -28,7 +28,8 @@ module.exports = function(grunt) {
         files: {
           'build/script.js': 'script.js',
           'build/cyto.js': 'cyto.js',
-          'build/model.js': 'model.js'
+          'build/model.js': 'model.js',
+          'build/rgdSetUpScript.js':'rgdSetUpScript.js'
         }
       },
       options: {
@@ -37,7 +38,7 @@ module.exports = function(grunt) {
     },
     jshint: {
       all: ['**.js'], //lint all js files in the project
-      app: ['script.js','cyto.js','model.js'],
+      app: ['script.js','cyto.js','model.js','rgdSetUpScript.js'],
       options: {
         //ENVIRONMENT GLOBALS
         browser: true,

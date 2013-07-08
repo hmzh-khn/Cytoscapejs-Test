@@ -1,0 +1,13 @@
+{
+  "name": "cytotest",
+  "version": "0.1.0",
+  "main": "index.html",
+  "dependencies": {
+    "jquery": "1.10.x"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ]
+}

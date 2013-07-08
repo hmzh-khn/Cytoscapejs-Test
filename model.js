@@ -1,4 +1,12 @@
-var RGD = function RGD(dataArr, lineNum /*debugging variable*/) {
+//lower cases everything
+var lowerCase = function toLower(arr) {
+  var newArr = arr.map(function(str) {
+    return (str)? str.toLowerCase() : str;
+  });
+  return newArr;
+};
+
+var RGD = function RGD(dataArr, lineNum) {
   this.symbol = dataArr[0];
   this.line = lineNum;
   //should be the same for all species, could be missing from rat or human
@@ -37,4 +45,21 @@ var Human = function Human(humanArr) {
   this.entrezGeneId = humanArr[2];
   this.source = humanArr[3];
   this.hgncId = humanArr[4];
+};
+
+var CytoNode = function CytoNode(id, nodeInfo, type) {
+  this.data = {
+    id : id,
+    name : id,
+    nodeInfo : nodeInfo,
+    type : type
+  };
+};
+
+var CytoLink = function CytoLink(startNode, endNode, linkType) {
+  this.data = {
+    source : startNode.data.id,
+    type : linkType,
+    target : endNode.data.id
+  };
 };

@@ -23,7 +23,7 @@ $.get(dataURL, {}, function(responseText){
 
     rgdMap[dataArray[0]] = new RGD(dataArray, lineNum);  //new rgd's with rat as key
   }; 
-},'jsonp');  
+},'text');  
 
 /*
 $.ajax({

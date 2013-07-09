@@ -12,7 +12,7 @@ var generateCytoInfo = function() {
   $.get(networkURL, {}, function(responseText) {
     lines = responseText.split(lineSplit);
 
-    lines.forEach(function(line) {
+    _.each(lines, function(line) {
       var testdata = line.split(_Split);
 
       var data = lowerCase(testdata);
@@ -21,10 +21,6 @@ var generateCytoInfo = function() {
       cytoLinks.push(new CytoLink(data[0], data[2], linkType));
     });
 
-/*    Object.keys(nodesObj).forEach(function(key) {
-      cytoNodes.push(nodesObj[key]);    //pushes every unique object
-    });
-*/
   },'text').done(console.log('created cytoLinks'));
 
   for(var i = 0; i < cytoLinks.length; i++) {
@@ -63,12 +59,3 @@ $.get(dataURL, {}, function(responseText){
   console.log('rgdMap ready');
   cytoInfo = generateCytoInfo();
 });  
-
-/*
-$.ajax({
-  url: dataURL,
-  type: 'GET',
-  cache: true
-}).success(function() {
-  
-);*/

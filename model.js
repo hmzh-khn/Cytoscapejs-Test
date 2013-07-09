@@ -1,6 +1,6 @@
 //lower cases everything
 var lowerCase = function toLower(arr) {
-  var newArr = arr.map(function(str) {
+  var newArr = _.map(arr, function(str) {
     return (str)? str.toLowerCase() : str;
   });
   return newArr;

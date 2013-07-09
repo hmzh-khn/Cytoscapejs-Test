@@ -4,7 +4,42 @@ var rgdMap = {},
   nodeNum = 0,
   nodesObj = {};
 
+var generateCytoInfo = function() {
+  var networkURL = URL + 'demo_network.sif',
+  cytoNodes = [],
+  cytoLinks = [];
 
+  $.get(networkURL, {}, function(responseText) {
+    lines = responseText.split(lineSplit);
+
+    lines.forEach(function(line) {
+      var testdata = line.split(_Split);
+
+      var data = lowerCase(testdata);
+
+      var linkType = data[1];
+      cytoLinks.push(new CytoLink(data[0], data[2], linkType));
+    });
+
+/*    Object.keys(nodesObj).forEach(function(key) {
+      cytoNodes.push(nodesObj[key]);    //pushes every unique object
+    });
+*/
+  },'text').done(console.log('created cytoLinks'));
+
+  for(var i = 0; i < cytoLinks.length; i++) {
+    marker = cytoLinks[i].data;
+    if(!nodesObj[marker.startNodeId]) {
+      nodesObj[marker.startNodeId] = new CytoNode(marker.startNodeId,rgdMap[marker.startNodeId], 'Gene');
+      nodeNum++;
+    }
+  }
+
+  return {
+    nodes : cytoNodes,
+    links : cytoLinks
+  };
+};
 
 var dataURL = URL + 'RGD_ORTHOLOGS.txt',
   lineSplit = /\n/,

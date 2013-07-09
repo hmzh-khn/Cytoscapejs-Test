@@ -1,45 +1,65 @@
 var rgdMap = {},
   URL = 'http://cs.catlin.edu/~khanh/cytoscape/',
   cytoInfo = {},
-  nodeNum = 0,
-  nodesObj = {};
+  dataURL = URL + 'RGD_ORTHOLOGS.txt',
+  lineSplit = /\n/,
+  carriageLineSplit = /\r\n/, //<--- windows has this as a new line carraigereturn then newline (\r\n)
+  _Split = '_';;
 
 var generateCytoInfo = function() {
   var networkURL = URL + 'demo_network.sif',
   cytoNodes = [],
-  cytoLinks = [];
+  cytoLinks = [],
+  nodesObj = {};
 
   $.get(networkURL, {}, function(responseText) {
-    lines = responseText.split(lineSplit);
+    var lines = responseText.split(carriageLineSplit);
 
     _.each(lines, function(line) {
-      var testdata = line.split(_Split);
+      var data = line.split(_Split);
 
-      var data = lowerCase(testdata);
+      //potenially combine lowercasing and empty string?
+      data = lowerCase(data);
 
-      var linkType = data[1];
-      cytoLinks.push(new CytoLink(data[0], data[2], linkType));
+      //gets rid of the problem with empty strings
+      //_.each(data, function(el) {
+      //  el = el.split(/\r/).shift();
+      //  console.log(el + " : " + el.length);
+      //});
+
+      var startNodeId = data[0],
+        endNodeId = data[2],
+        startNodeInfo = rgdMap[startNodeId],
+        endNodeInfo = rgdMap[endNodeId],
+        startNode = new CytoNode(startNodeId, startNodeInfo, 'Gene'),
+        endNode = new CytoNode(endNodeId, endNodeInfo, 'Gene');
+
+      nodesObj[startNodeId] = startNode;
+      nodesObj[endNodeId] = endNode;
+
+      cytoLinks.push(new CytoLink(startNodeId, endNodeId, data[1]));
     });
 
-  },'text').done(console.log('created cytoLinks'));
+  },'text').done(function() {
+      console.log('created cytoLinks');
+      _.each(nodesObj, function(cytoNode) {
+        cytoNodes.push(cytoNode);
+      });
+    }).done(console.log('registered ' +cytoNodes.length+ ' cytoNodes'));
 
-  for(var i = 0; i < cytoLinks.length; i++) {
+/*  for(var i = 0; i < cytoLinks.length; i++) {
     marker = cytoLinks[i].data;
     if(!nodesObj[marker.startNodeId]) {
       nodesObj[marker.startNodeId] = new CytoNode(marker.startNodeId,rgdMap[marker.startNodeId], 'Gene');
       nodeNum++;
     }
-  }
+  }*/
 
   return {
     nodes : cytoNodes,
     links : cytoLinks
   };
 };
-
-var dataURL = URL + 'RGD_ORTHOLOGS.txt',
-  lineSplit = /\n/,
-  _Split = '_';
 
 $.get(dataURL, {}, function(responseText){ 
   var data = responseText.split(lineSplit);    //split by new line

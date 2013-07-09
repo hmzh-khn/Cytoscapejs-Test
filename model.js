@@ -56,10 +56,10 @@ var CytoNode = function CytoNode(id, nodeInfo, type) {
   };
 };
 
-var CytoLink = function CytoLink(startNode, endNode, linkType) {
+var CytoLink = function CytoLink(startNodeId, endNodeId, linkType) {
   this.data = {
-    source : startNode.data.id,
+    source : startNodeId,
     type : linkType,
-    target : endNode.data.id
+    target : endNodeId
   };
 };

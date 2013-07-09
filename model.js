@@ -6,9 +6,8 @@ var lowerCase = function toLower(arr) {
   return newArr;
 };
 
-var RGD = function RGD(dataArr, lineNum) {
+var RGD = function RGD(dataArr) {
   this.symbol = dataArr[0];
-  this.line = lineNum;
   //should be the same for all species, could be missing from rat or human
 
   var ratArr = dataArr.splice(0,3); //splice 3 elements starting at 0

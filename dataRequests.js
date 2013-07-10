@@ -7,7 +7,7 @@ var rgdMap = {},
   _Split = '_';
 
 /****** RGDMap data retrieval and parsing ******/
-$.get(dataURL, {}, function(responseText) { 
+var xhr = $.get(dataURL, {}, function(responseText) { 
   var data = responseText.split(lineSplit);    //split by new line
   data.pop();           //remove empty string from end ""
 
@@ -20,9 +20,13 @@ $.get(dataURL, {}, function(responseText) {
     dataArr = lowerCase(dataArr);
     rgdMap[dataArr[0]] = new RGD(dataArr);  //new rgd's with rat as key
   });
-},'text').done(function() {
+},'text')
+
+.done(function() {
   console.log('rgdMap ready');
-}).done( function() {
+})
+
+.done( function() {
   var networkURL = URL + 'demo_network.sif',
     cytoNodes = [],
     cytoLinks = [],
@@ -49,17 +53,29 @@ $.get(dataURL, {}, function(responseText) {
       cytoLinks.push(new CytoLink(startNodeId, endNodeId, data[1]));
     });
 
-  },'text').done(function() {
+  },'text')
+
+  .done(function() {
       console.log('created cytoLinks');
       _.each(nodesObj, function(cytoNode) {
         cytoNodes.push(cytoNode);
       });
-  }).done( function() {
+      cytoInfo = {
+        nodes : cytoNodes,
+        links : cytoLinks
+      };;
+    console.log('earlier')
+  }, 
+
+  function() {
     console.log('registered ' +cytoNodes.length+ ' cytoNodes');
+  }, 
+
+  //render the cytoscape network when finished with reqs
+  function() {
+    console.log('later');
+    cytoRender(cytoInfo);
   });
 
-  cytoInfo = {
-    nodes : cytoNodes,
-    links : cytoLinks
-  };
-});  
+});
+

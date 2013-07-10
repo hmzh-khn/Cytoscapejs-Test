@@ -3,7 +3,6 @@ var rgdMap = {},
   cytoInfo = {},
   dataURL = URL + 'RGD_ORTHOLOGS.txt',
   lineSplit = /\n/,
-  carriageLineSplit = /\r\n/, //<--- windows has this as a new line carraigereturn then newline (\r\n)
   _Split = '_';
 
 /****** RGDMap data retrieval and parsing ******/

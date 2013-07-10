@@ -34,7 +34,8 @@ var xhr = $.get(dataURL, {}, function(responseText) {
 
   /****** Network data retrieval and creation ******/
   $.get(networkURL, {}, function(responseText) {
-    var lines = responseText.split(carriageLineSplit);
+    var lines = responseText.replace(/\r/g,"")
+      .split(lineSplit); //removes carriage returns and splits
 
     _.each(lines, function(line) {
       //lowercases array data from splitting
@@ -74,7 +75,7 @@ var xhr = $.get(dataURL, {}, function(responseText) {
   //render the cytoscape network when finished with reqs
   function() {
     console.log('later');
-    cytoRender(cytoInfo);
+    renderCyto(cytoInfo);
   });
 
 });

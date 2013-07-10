@@ -2,13 +2,14 @@ doctype 5
 html(lang="en")
   head
     title CytoscapeJS Playground
+    script(src="../components/jquery/jquery.min.js")
+    script(src="../components/cytoscape/arbor.js")
     link(rel="stylesheet",type="text/css",href="style.css")
 
   body
     #cy(style="display: block; font-family: 'helvetica arial sans-serif'; font-size: 14px; height: 80%; left: 0px; line-height: normal; position: absolute; bottom: 0px; width: 1280px;")
     #msg Node Information
 
-    script(src="../components/jquery/jquery-ajax.min.js")
     script(src="../components/cytoscape/cytoscape.min.js")
     script(src="../components/underscore/underscore-min.js")
     script(src="cyto.js")

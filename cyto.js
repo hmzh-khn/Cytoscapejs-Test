@@ -59,7 +59,7 @@ var renderCyto = function renderCyto(cytoVar) {
           'color': 'white',
           'text-outline-width': 2,
           'text-outline-color': '#888',
-
+          'background-color': 'data(color)'
         })
       .selector('edge')
         .css({

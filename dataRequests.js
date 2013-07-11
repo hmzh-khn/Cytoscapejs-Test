@@ -44,8 +44,8 @@ var xhr = $.get(dataURL, {}, function(responseText) {
         endNodeId = data[2],
         startNodeInfo = rgdMap[startNodeId],
         endNodeInfo = rgdMap[endNodeId],
-        startNode = new CytoNode(startNodeId, startNodeInfo, 'Gene'),
-        endNode = new CytoNode(endNodeId, endNodeInfo, 'Gene');
+        startNode = new CytoNode(startNodeId, startNodeInfo, randColor() , 'Gene'),
+        endNode = new CytoNode(endNodeId, endNodeInfo, randColor(), 'Gene');
 
       nodesObj[startNodeId] = startNode;
       nodesObj[endNodeId] = endNode;
@@ -79,3 +79,8 @@ var xhr = $.get(dataURL, {}, function(responseText) {
 
 });
 
+var randColor = function randColor() {
+  var red = Math.random() * 255,
+    green = Math.random() * 255;
+    return rgbToHex(red,green,0); //returns something between red and green
+};

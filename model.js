@@ -6,6 +6,11 @@ var lowerCase = function toLower(arr) {
   return newArr;
 };
 
+//converts RGB to hexadecimal
+var rgbToHex = function rgbToHex(r, g, b) {
+  return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
 var RGD = function RGD(dataArr) {
   this.symbol = dataArr[0];
   //should be the same for all species, could be missing from rat or human
@@ -46,12 +51,13 @@ var Human = function Human(humanArr) {
   this.hgncId = humanArr[4];
 };
 
-var CytoNode = function CytoNode(id, nodeInfo, type) {
+var CytoNode = function CytoNode(id, nodeInfo, gradient, type) {
   this.data = {
     id : id,
     name : id,
     nodeInfo : nodeInfo,
-    type : type
+    type : type,
+    color: gradient
   };
 };
 

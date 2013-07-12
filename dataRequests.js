@@ -79,8 +79,16 @@ var xhr = $.get(dataURL, {}, function(responseText) {
 
 });
 
-var randColor = function randColor() {
+var randColor = function randColor(decimal) {
+  decimal = decimal || Math.random();
+
   var red = Math.random() * 255,
     green = Math.random() * 255;
+
+    var buffer = Math.round(green - red);
+
+    green = (buffer >= 0)? Math.abs(buffer) : 0;
+    red = (buffer >= 0)? 0 : Math.abs(buffer);
+
     return rgbToHex(red,green,0); //returns something between red and green
 };

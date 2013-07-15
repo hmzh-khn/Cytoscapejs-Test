@@ -12,7 +12,7 @@ var rgbToHex = function rgbToHex(r, g, b) {
 }
 
 var RGD = function RGD(dataArr) {
-  this.symbol = dataArr[0];
+  this.symbol = dataArr[0] || dataArr[3] || dataArr[7]; //defaults to human or mouse if rat does not exist
   //should be the same for all species, could be missing from rat or human
 
   var ratArr = dataArr.splice(0,3); //splice 3 elements starting at 0

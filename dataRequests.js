@@ -17,6 +17,9 @@ var xhr = $.get(dataURL, {}, function(responseText) {
       throw new Error('Error w/ data length. Is really ' + dataArr.length + ".");
     }
     dataArr = lowerCase(dataArr);
+
+    var key = dataArr[0] || dataArr[3] || dataArr[7]; //defaults to human or mouse if rat does not exist
+
     rgdMap[dataArr[0]] = new RGD(dataArr);  //new rgd's with rat as key
   });
 },'text')

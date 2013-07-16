@@ -29,15 +29,15 @@ var xhr = $.get(dataURL, {}, function(responseText) {
 })
 
 .done( function() {
-  var networkURL = URL + 'demo_network.sif',
+  var networkURL = URL + 'basakData.sif',
     cytoNodes = [],
     cytoLinks = [],
     nodesObj = {};
 
   /****** Network data retrieval and creation ******/
   $.get(networkURL, {}, function(responseText) {
-    var lines = responseText.replace(/\r/g,"")
-      .split(lineSplit); //removes carriage returns and splits
+    var lines = responseText.replace(/\r/g,"") //removes carriage returns
+      .split(lineSplit);
 
     _.each(lines, function(line) {
       //lowercases array data from splitting
@@ -47,13 +47,14 @@ var xhr = $.get(dataURL, {}, function(responseText) {
         endNodeId = data[2],
         startNodeInfo = rgdMap[startNodeId],
         endNodeInfo = rgdMap[endNodeId],
-        startNode = new CytoNode(startNodeId, startNodeInfo, randColor() , 'Gene'),
-        endNode = new CytoNode(endNodeId, endNodeInfo, randColor(), 'Gene');
+        startNode = new CytoNode(startNodeId, startNodeInfo, randColor() , 'gene'),
+        endNode = new CytoNode(endNodeId, endNodeInfo, randColor(), 'gene');
 
       nodesObj[startNodeId] = startNode;
       nodesObj[endNodeId] = endNode;
 
-      cytoLinks.push(new CytoLink(startNodeId, endNodeId, data[1]));
+      console.log(data[1]);
+      cytoLinks.push(new CytoLink(startNodeId, endNodeId, data[1].toLowerCase()));
     });
 
   },'text')

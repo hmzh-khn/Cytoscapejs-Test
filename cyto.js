@@ -6,23 +6,23 @@ var arborOptions = {
   liveUpdate: true, // whether to show the layout as it's running
   ready: undefined, // callback on layoutready 
   stop: undefined, // callback on layoutstop
-  maxSimulationTime: 4000, // max length in ms to run the layout
+  maxSimulationTime: 6000, // max length in ms to run the layout
   fit: true, // fit to viewport
-  padding: [ 50, 50, 50, 50 ], // top, right, bottom, left
-  ungrabifyWhileSimulating: true, // so you can't drag nodes during layout
+  padding: [ 10, 10, 10, 10 ], // top, right, bottom, left
+  ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
 
   // forces used by arbor (use arbor default on undefined)
-  repulsion: undefined,
+  repulsion: 10000,
   stiffness: undefined,
   friction: undefined,
   gravity: true,
-  fps: undefined,
+  fps: undefined, 
   precision: undefined,
 
   // static numbers or functions that dynamically return what these
   // values should be for each element
   nodeMass: undefined, 
-  edgeLength: undefined,
+  edgeLength: 100,
 
   stepSize: 1, // size of timestep in simulation
 
@@ -39,7 +39,7 @@ var renderCyto = function renderCyto(cytoVar) {
   cLinks = [];
 
   _.each(cytoInfo.nodes, function(node) {
-      cNodes.push({data: node.data});
+      cNodes.push({classes: node.classes,data: node.data});
   });
 
   _.each(cytoInfo.links, function(link) {
@@ -47,6 +47,12 @@ var renderCyto = function renderCyto(cytoVar) {
   });
 
   $('#cy').cytoscape({
+    showOverlay: true,
+    zoom: 3,
+    minzoom: 1,
+    maxzoom: 5,
+
+
     style: cytoscape.stylesheet()
       .selector('core')
         .css({
@@ -63,7 +69,8 @@ var renderCyto = function renderCyto(cytoVar) {
         })
       .selector('edge')
         .css({
-          'target-arrow-shape': 'none'
+          'target-arrow-shape': 'none',
+          'line-style': 'solid'
         })
       .selector(':selected')
         .css({
@@ -76,6 +83,20 @@ var renderCyto = function renderCyto(cytoVar) {
         .css({
           'opacity': 0.25,
           'text-opacity': 0
+        })
+      .selector('.shared-protein-domains')
+        .css({
+          'line-style': 'dashed',
+          'line-color': 'red'
+        })
+      .selector('.genetic-interactions')
+        .css({
+          'line-style': 'dotted',
+          'line-color': 'black'
+        })
+      .selector('.gene')
+        .css({
+          //'shape': 'triangle'
         }),
     
     elements: {
@@ -113,6 +134,13 @@ var renderCyto = function renderCyto(cytoVar) {
         if( e.cyTarget === cy ){
           cy.elements().removeClass('faded');
         }
+      });
+
+      cy.on('tap', 'edge', function(e) {
+        var link = e.cyTarget;
+        console.log(link);
+
+        msgBox.innerText = link.data('source')+' = ['+link.data('type')+'] =>'+link.data('target');
       });
     },
 

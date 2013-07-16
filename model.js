@@ -52,6 +52,9 @@ var Human = function Human(humanArr) {
 };
 
 var CytoNode = function CytoNode(id, nodeInfo, gradient, type) {
+  var classList = [type];
+
+  this.classes = classList.join(' ');
   this.data = {
     id : id,
     name : id,
@@ -62,6 +65,9 @@ var CytoNode = function CytoNode(id, nodeInfo, gradient, type) {
 };
 
 var CytoLink = function CytoLink(startNodeId, endNodeId, linkType) {
+  var classList = [linkType];
+
+  this.classes = classList.join(' ');
   this.data = {
     source : startNodeId,
     type : linkType,

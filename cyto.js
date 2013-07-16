@@ -1,5 +1,6 @@
-var msgBox = document.getElementById('msg'),
-  geneInfoLink = 'http://www.ncbi.nlm.nih.gov/gene/';
+var $$ = function(sel, el) {return (el || document).querySelector(sel)};
+var msgBox = $$('#msg');
+var geneInfoLink = 'http://www.ncbi.nlm.nih.gov/gene/';
 
 var arborOptions = {
   name: 'arbor',
@@ -12,8 +13,8 @@ var arborOptions = {
   ungrabifyWhileSimulating: false, // so you can't drag nodes during layout
 
   // forces used by arbor (use arbor default on undefined)
-  repulsion: 10000,
-  stiffness: undefined,
+  repulsion: 1000,
+  stiffness: 200,
   friction: undefined,
   gravity: true,
   fps: undefined, 
@@ -138,12 +139,30 @@ var renderCyto = function renderCyto(cytoVar) {
 
       cy.on('tap', 'edge', function(e) {
         var link = e.cyTarget;
-        console.log(link);
 
-        msgBox.innerText = link.data('source')+' = ['+link.data('type')+'] =>'+link.data('target');
+        msgBox.innerText = link.data('source')+' =['+link.data('type')+']=>'+link.data('target');
       });
     },
 
     layout: arborOptions
   });
 };
+
+//RERENDERING
+var renderBtn = $$('#redo');
+renderBtn.addEventListener('click', function() {
+  var allEles = cy.$('*');
+  cy.remove(allEles);
+  setTimeout(function() {cy.add(allEles);}, 3000);
+});
+
+//SEARCH FUNCTIONALITY
+var search = $$('#search');
+search.addEventListener('input', function() {
+  var val = search.value;
+  console.log(val);
+  var el = cy.elements('node#'+val);
+  if(el) {
+    cy.center(el);
+  }
+});

@@ -1,25 +1,29 @@
-var rgdMap = {},
-  URL = 'http://cs.catlin.edu/~khanh/cytoscape/',
-  cytoInfo = {},
-  dataURL = URL + 'RGD_ORTHOLOGS.txt',
-  expURL = URL + 'test_levels.txt',
-  lineSplit = /\n/,
-  _Split = '_',
-  pipeSplit = /\|/
-  expData = {};
-
+var rgdMap = {};
+var URL = 'http://cs.catlin.edu/~khanh/cytoscape/';
+var cytoInfo = {};
+var dataURL = URL + 'RGD_ORTHOLOGS.txt';
+var expURL = URL + 'test_levels.txt';
+var lineSplit = /\n/;
+var _Split = '_';
+var pipeSplit = /\|/;
+var expData = {};
+var expStats = {};
 
 $.get(expURL, {}, function(resText) {
   var data = resText.split(pipeSplit);
-
   var max = {ej:0,lj:0,lp:0};
-  var min = {ej:100000000000,lj:100000000000,lp:100000000000};
+  var min = {ej:Infinity,lj:Infinity,lp:Infinity};
   var mean = {ej:0,lj:0,lp:0};
   var numElems = data.length;
 
   _.each(data, function(line) {
     var pts = line.split(_Split);
-    expData[pts[0]] = {
+
+    for(var i = 1; i < pts.length; i++) {
+      pts[i] = parseFloat(pts[i]);
+    }
+
+    expData[pts[0].toLowerCase()] = {
       ej: pts[1],
       lj: pts[2],
       lp: pts[3]
@@ -38,10 +42,21 @@ $.get(expURL, {}, function(resText) {
     mean.lp += pts[3];
   });
 
-  _.map(mean, function(val) {
+  //calculate the averages
+  var meanArr = _.map(mean, function(val) {
     val /= numElems;
     return val;
   });
+
+  mean.ej = meanArr[0];
+  mean.lj = meanArr[1];
+  mean.lp = meanArr[2];
+
+  expStats = {
+    max:max,
+    min:min,
+    mean:mean
+  };
 
 })
 
@@ -73,10 +88,10 @@ $.get(dataURL, {}, function(responseText) {
 })
 
 .done( function() {
-  var networkURL = URL + 'basakData.sif',
-    cytoNodes = [],
-    cytoLinks = [],
-    nodesObj = {};
+  var networkURL = URL + 'basakData.sif';
+  var cytoNodes = [];
+  var cytoLinks = [];
+  var nodesObj = {};
 
   /****** Network data retrieval and creation ******/
   $.get(networkURL, {}, function(responseText) {
@@ -84,15 +99,14 @@ $.get(dataURL, {}, function(responseText) {
       .split(lineSplit);
 
     _.each(lines, function(line) {
-      //lowercases array data from splitting
       var data = lowerCase(line.split(_Split));
 
-      var startNodeId = data[0],
-        endNodeId = data[2],
-        startNodeInfo = rgdMap[startNodeId],
-        endNodeInfo = rgdMap[endNodeId],
-        startNode = new CytoNode(startNodeId, startNodeInfo, randColor() , 'gene'),
-        endNode = new CytoNode(endNodeId, endNodeInfo, randColor(), 'gene');
+      var startNodeId = data[0];
+      var endNodeId = data[2];
+      var startNodeInfo = rgdMap[startNodeId];
+      var endNodeInfo = rgdMap[endNodeId];
+      var startNode = new CytoNode(startNodeId, startNodeInfo, (expData[startNodeId] || null) , 'gene');
+      var endNode = new CytoNode(endNodeId, endNodeInfo, (expData[endNodeId] || null), 'gene');
 
       nodesObj[startNodeId] = startNode;
       nodesObj[endNodeId] = endNode;
@@ -121,5 +135,4 @@ $.get(dataURL, {}, function(responseText) {
   function() {
     renderCyto(cytoInfo);
   });
-
 });

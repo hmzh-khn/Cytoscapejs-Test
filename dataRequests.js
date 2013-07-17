@@ -43,20 +43,17 @@ $.get(expURL, {}, function(resText) {
   });
 
   //calculate the averages
-  var meanArr = _.map(mean, function(val) {
+  _.each(mean, function(val, key) {
     val /= numElems;
-    return val;
   });
-
-  mean.ej = meanArr[0];
-  mean.lj = meanArr[1];
-  mean.lp = meanArr[2];
 
   expStats = {
     max:max,
     min:min,
     mean:mean
   };
+
+  colorData = expData;
 })
 
 .done(function() {

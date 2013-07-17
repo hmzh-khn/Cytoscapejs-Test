@@ -1,3 +1,5 @@
+var colorData = {};
+
 //lower cases everything
 var lowerCase = function toLower(arr) {
   var newArr = _.map(arr, function(str) {
@@ -61,7 +63,7 @@ var CytoNode = function CytoNode(id, nodeInfo, expression, type) {
     nodeInfo : nodeInfo,
     type : type,
     expression: expression,
-    color: null
+    color: processExpression(expression.ej)
   };
 };
 
@@ -95,11 +97,8 @@ var CytoLink = function CytoLink(startNodeId, endNodeId, linkType) {
 };
 
 var randColor = function randColor(decimal) {
-  decimal = decimal || Math.random();
-
-  var red = Math.random() * 255,
-    green = Math.random() * 255;
-
+  var red = (decimal || Math.random()) * 255;
+  var green = (decimal || Math.random()) * 255;
   var buffer = Math.round(green - red);
 
   green = (buffer >= 0)? Math.abs(buffer) : 0;
@@ -108,11 +107,12 @@ var randColor = function randColor(decimal) {
   return rgbToHex(red,green,0); //returns something between red and green
 };
 
-var processExpression = function processExpression(node, time, options) {
+var processExpression = function processExpression(val, time, options) {
   time = (expData[time])? time : 'ej';
 
-  //eventually combine w/ options
+  expStats; colorData;
 
+  var decimal = (expStats.max - expStats.min)/(val - expStats.min);
 
-
+  return randColor(decimal);
 };

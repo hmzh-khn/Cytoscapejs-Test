@@ -2,13 +2,57 @@ var rgdMap = {},
   URL = 'http://cs.catlin.edu/~khanh/cytoscape/',
   cytoInfo = {},
   dataURL = URL + 'RGD_ORTHOLOGS.txt',
+  expURL = URL + 'test_levels.txt',
   lineSplit = /\n/,
-  _Split = '_';
+  _Split = '_',
+  pipeSplit = /\|/
+  expData = {};
+
+
+$.get(expURL, {}, function(resText) {
+  var data = resText.split(pipeSplit);
+
+  var max = {ej:0,lj:0,lp:0};
+  var min = {ej:100000000000,lj:100000000000,lp:100000000000};
+  var mean = {ej:0,lj:0,lp:0};
+  var numElems = data.length;
+
+  _.each(data, function(line) {
+    var pts = line.split(_Split);
+    expData[pts[0]] = {
+      ej: pts[1],
+      lj: pts[2],
+      lp: pts[3]
+    };
+
+    max.ej = (max.ej < pts[1])? pts[1] : max.ej;
+    max.lj = (max.lj < pts[2])? pts[2] : max.lj;
+    max.lp = (max.lp < pts[3])? pts[3] : max.lp;
+
+    min.ej = (min.ej > pts[1])? pts[1] : min.ej;
+    min.lj = (min.lj > pts[2])? pts[2] : min.lj;
+    min.lp = (min.lp > pts[3])? pts[3] : min.lp;
+
+    mean.ej += pts[1];
+    mean.lj += pts[2];
+    mean.lp += pts[3];
+  });
+
+  _.map(mean, function(val) {
+    val /= numElems;
+    return val;
+  });
+
+})
+
+.done(function() {
+  console.log('Expression values read.');
+});
 
 /****** RGDMap data retrieval and parsing ******/
-var xhr = $.get(dataURL, {}, function(responseText) { 
+$.get(dataURL, {}, function(responseText) { 
   var data = responseText.split(lineSplit);    //split by new line
-  data.pop();           //remove empty string from end ""
+  data.pop(); //empty string removal
 
   _.each(data, function(line) {
     //lowercases array data from splitting
@@ -53,7 +97,6 @@ var xhr = $.get(dataURL, {}, function(responseText) {
       nodesObj[startNodeId] = startNode;
       nodesObj[endNodeId] = endNode;
 
-      console.log(data[1]);
       cytoLinks.push(new CytoLink(startNodeId, endNodeId, data[1].toLowerCase()));
     });
 
@@ -67,8 +110,7 @@ var xhr = $.get(dataURL, {}, function(responseText) {
       cytoInfo = {
         nodes : cytoNodes,
         links : cytoLinks
-      };;
-    console.log('earlier')
+      };
   }, 
 
   function() {
@@ -77,22 +119,7 @@ var xhr = $.get(dataURL, {}, function(responseText) {
 
   //render the cytoscape network when finished with reqs
   function() {
-    console.log('later');
     renderCyto(cytoInfo);
   });
 
 });
-
-var randColor = function randColor(decimal) {
-  decimal = decimal || Math.random();
-
-  var red = Math.random() * 255,
-    green = Math.random() * 255;
-
-    var buffer = Math.round(green - red);
-
-    green = (buffer >= 0)? Math.abs(buffer) : 0;
-    red = (buffer >= 0)? 0 : Math.abs(buffer);
-
-    return rgbToHex(red,green,0); //returns something between red and green
-};

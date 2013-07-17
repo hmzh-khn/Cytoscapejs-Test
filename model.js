@@ -51,7 +51,7 @@ var Human = function Human(humanArr) {
   this.hgncId = humanArr[4];
 };
 
-var CytoNode = function CytoNode(id, nodeInfo, gradient, type) {
+var CytoNode = function CytoNode(id, nodeInfo, expression, type) {
   var classList = [type];
 
   this.classes = classList.join(' ');
@@ -60,17 +60,59 @@ var CytoNode = function CytoNode(id, nodeInfo, gradient, type) {
     name : id,
     nodeInfo : nodeInfo,
     type : type,
-    color: gradient
+    expression: expression,
+    color: null
   };
 };
 
 var CytoLink = function CytoLink(startNodeId, endNodeId, linkType) {
+  var lineStyle, lineColor;
+  switch(linkType) {
+    case "genetic-interactions":
+      lineStyle = 'dotted';
+      lineColor = 'black';
+    break;
+    case "shared-protein-domains":
+        lineStyle = 'dashed';
+        lineColor = 'red';
+    break;
+    default:
+        lineStyle = 'solid';
+        lineColor = 'black';
+    break;
+  }
+
   var classList = [linkType];
 
   this.classes = classList.join(' ');
   this.data = {
     source : startNodeId,
     type : linkType,
-    target : endNodeId
+    target : endNodeId,
+    style_line_style: lineStyle,
+    style_line_color: lineColor
   };
+};
+
+var randColor = function randColor(decimal) {
+  decimal = decimal || Math.random();
+
+  var red = Math.random() * 255,
+    green = Math.random() * 255;
+
+  var buffer = Math.round(green - red);
+
+  green = (buffer >= 0)? Math.abs(buffer) : 0;
+  red = (buffer >= 0)? 0 : Math.abs(buffer);
+
+  return rgbToHex(red,green,0); //returns something between red and green
+};
+
+var processExpression = function processExpression(node, time, options) {
+  time = (expData[time])? time : 'ej';
+
+  //eventually combine w/ options
+
+
+
 };

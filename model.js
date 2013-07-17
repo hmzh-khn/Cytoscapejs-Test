@@ -97,12 +97,10 @@ var CytoLink = function CytoLink(startNodeId, endNodeId, linkType) {
 };
 
 var randColor = function randColor(decimal) {
-  var red = (decimal || Math.random()) * 255;
-  var green = (decimal || Math.random()) * 255;
-  var buffer = Math.round(green - red);
+  var buffer = decimal - 0.5;
 
-  green = (buffer >= 0)? Math.abs(buffer) : 0;
-  red = (buffer >= 0)? 0 : Math.abs(buffer);
+  var green = (buffer >= 0)? 255*Math.abs(buffer) : 0;
+  var red = (buffer >= 0)? 0 : 255*Math.abs(buffer);
 
   return rgbToHex(red,green,0); //returns something between red and green
 };
@@ -110,9 +108,8 @@ var randColor = function randColor(decimal) {
 var processExpression = function processExpression(val, time, options) {
   time = (expData[time])? time : 'ej';
 
-  expStats; colorData;
-
-  var decimal = (expStats.max - expStats.min)/(val - expStats.min);
+  var decimal = (val - expStats.min[time])/(expStats.max[time] - expStats.min[time]);
+  console.log('\t'+val+' --> '+decimal);
 
   return randColor(decimal);
 };

@@ -11,10 +11,10 @@ var expStats = {};
 
 $.get(expURL, {}, function(resText) {
   var data = resText.split(pipeSplit);
-  var max = {ej:0,lj:0,lp:0};
-  var min = {ej:Infinity,lj:Infinity,lp:Infinity};
   var mean = {ej:0,lj:0,lp:0};
   var numElems = data.length;
+
+  var valList = {ej:[],lj:[],lp:[]};
 
   _.each(data, function(line) {
     var pts = line.split(_Split);
@@ -23,19 +23,15 @@ $.get(expURL, {}, function(resText) {
       pts[i] = parseFloat(pts[i]);
     }
 
+    valList.ej.push(pts[1]);
+    valList.lj.push(pts[2]);
+    valList.lp.push(pts[3]);
+
     expData[pts[0].toLowerCase()] = {
       ej: pts[1],
       lj: pts[2],
       lp: pts[3]
     };
-
-    max.ej = (max.ej < pts[1])? pts[1] : max.ej;
-    max.lj = (max.lj < pts[2])? pts[2] : max.lj;
-    max.lp = (max.lp < pts[3])? pts[3] : max.lp;
-
-    min.ej = (min.ej > pts[1])? pts[1] : min.ej;
-    min.lj = (min.lj > pts[2])? pts[2] : min.lj;
-    min.lp = (min.lp > pts[3])? pts[3] : min.lp;
 
     mean.ej += pts[1];
     mean.lj += pts[2];
@@ -48,8 +44,16 @@ $.get(expURL, {}, function(resText) {
   });
 
   expStats = {
-    max:max,
-    min:min,
+    max:{
+      ej:_.max(valList.ej),
+      lj:_.max(valList.lj),
+      lp:_.max(valList.lp)
+    },
+    min:{
+      ej:_.min(valList.ej),
+      lj:_.min(valList.lj),
+      lp:_.min(valList.lp)
+    },
     mean:mean
   };
 

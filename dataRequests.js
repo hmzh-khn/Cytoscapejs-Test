@@ -57,7 +57,6 @@ $.get(expURL, {}, function(resText) {
     min:min,
     mean:mean
   };
-
 })
 
 .done(function() {
@@ -99,18 +98,23 @@ $.get(dataURL, {}, function(responseText) {
       .split(lineSplit);
 
     _.each(lines, function(line) {
+      //lowercases array data from splitting
       var data = lowerCase(line.split(_Split));
 
       var startNodeId = data[0];
       var endNodeId = data[2];
       var startNodeInfo = rgdMap[startNodeId];
       var endNodeInfo = rgdMap[endNodeId];
-      var startNode = new CytoNode(startNodeId, startNodeInfo, (expData[startNodeId] || null) , 'gene');
-      var endNode = new CytoNode(endNodeId, endNodeInfo, (expData[endNodeId] || null), 'gene');
 
-      nodesObj[startNodeId] = startNode;
-      nodesObj[endNodeId] = endNode;
-
+      if(expData[startNodeId]) {
+        var startNode = new CytoNode(startNodeId, startNodeInfo, expData[startNodeId] , 'gene');
+        nodesObj[startNodeId] = startNode;
+      }
+      if(expData[endNodeId]) {
+        var endNode = new CytoNode(endNodeId, endNodeInfo, (expData[endNodeId] || null), 'gene');
+        nodesObj[endNodeId] = endNode;
+      }
+      if(expData[startNodeId] && expData[endNodeId])
       cytoLinks.push(new CytoLink(startNodeId, endNodeId, data[1].toLowerCase()));
     });
 

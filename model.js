@@ -1,5 +1,3 @@
-var colorData = {};
-
 //lower cases everything
 var lowerCase = function toLower(arr) {
   var newArr = _.map(arr, function(str) {

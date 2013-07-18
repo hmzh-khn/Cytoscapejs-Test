@@ -40,7 +40,7 @@ $.get(expURL, {}, function(resText) {
 
   //calculate the averages
   _.each(mean, function(val, key) {
-    val /= numElems;
+    mean[key] /= numElems;
   });
 
   expStats = {
@@ -56,8 +56,6 @@ $.get(expURL, {}, function(resText) {
     },
     mean:mean
   };
-
-  colorData = expData;
 })
 
 .done(function() {
